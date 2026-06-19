@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Атомный Челлендж — 66 дней</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#2D6A4F;--green-h:#1B4332;--green-l:#52B788;--green-p:#D8F3DC;
+  --accent:#E76F51;--accent-l:#FFE8D8;
+  --bg:#F9FAFB;--white:#fff;--text:#111827;--muted:#6B7280;--border:#E5E7EB;
+  --sh:0 4px 16px rgba(0,0,0,.07);--sh2:0 8px 32px rgba(0,0,0,.11);
+  --r:12px;--rl:20px;
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:16px}
+a{color:inherit;text-decoration:none}
+h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:800;line-height:1.2}
+h2{font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;line-height:1.3}
+h3{font-size:1.15rem;font-weight:600}
+
+.container{max-width:1080px;margin:0 auto;padding:0 20px}
+section{padding:72px 0}
+
+/* NAV */
+.nav{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:100;padding:14px 0}
+.nav-inner{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1.05rem;font-weight:700;color:var(--green)}
+.nav-logo span{color:var(--text)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:50px;font-size:.9rem;font-weight:600;cursor:pointer;border:none;transition:all .2s ease}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:var(--green-h);transform:translateY(-1px);box-shadow:0 4px 12px rgba(45,106,79,.35)}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover{background:#cf5f40;transform:translateY(-1px)}
+.btn-ghost{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.45)}
+.btn-ghost:hover{background:rgba(255,255,255,.25);border-color:#fff}
+.btn-outline{background:transparent;color:var(--green);border:2px solid var(--green)}
+.btn-outline:hover{background:var(--green);color:#fff}
+.btn-sm{padding:7px 16px;font-size:.82rem}
+.btn-lg{padding:15px 30px;font-size:1rem}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--green) 0%,var(--green-h) 100%);color:#fff;padding:96px 0 72px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-15%;width:550px;height:550px;background:radial-gradient(circle,rgba(82,183,136,.25) 0%,transparent 70%);pointer-events:none}
+.hero-content{position:relative;max-width:680px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);padding:5px 14px;border-radius:50px;font-size:.82rem;font-weight:600;margin-bottom:20px;letter-spacing:.02em}
+.hero h1{margin-bottom:18px}
+.hero-sub{font-size:1.1rem;opacity:.85;margin-bottom:32px;max-width:540px;line-height:1.7}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+
+/* STATS */
+.stats-bar{background:#fff;border-bottom:1px solid var(--border)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.stat-item{padding:24px;text-align:center;border-right:1px solid var(--border)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-size:2.4rem;font-weight:800;color:var(--green);line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:.82rem;color:var(--muted);font-weight:500}
+
+/* SECTION HEADER */
+.sec-hdr{text-align:center;margin-bottom:48px}
+.sec-tag{display:inline-block;background:var(--green-p);color:var(--green);padding:4px 13px;border-radius:50px;font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px}
+.sec-hdr p{color:var(--muted);font-size:1rem;max-width:520px;margin:10px auto 0}
+
+/* LAWS */
+.laws-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.law-card{background:#fff;border-radius:var(--rl);padding:26px 22px;box-shadow:var(--sh);border-top:4px solid var(--green-l);transition:transform .2s,box-shadow .2s}
+.law-card:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.law-num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:var(--green-p);color:var(--green);border-radius:8px;font-weight:800;font-size:.95rem;margin-bottom:14px}
+.law-card h3{margin-bottom:7px}
+.law-card p{color:var(--muted);font-size:.87rem}
+.law-ex{margin-top:12px;padding:9px 12px;background:var(--green-p);border-radius:8px;font-size:.8rem;color:var(--green);font-style:italic}
+
+/* STEPS */
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.step-card{display:flex;gap:18px;align-items:flex-start}
+.step-n{flex-shrink:0;width:42px;height:42px;background:var(--green);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem}
+.step-card h3{margin-bottom:5px}
+.step-card p{color:var(--muted);font-size:.87rem}
+
+/* CATALOG */
+#catalog{background:#fff}
+.cat-tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
+.tab-btn{padding:7px 16px;border-radius:50px;border:2px solid var(--border);background:#fff;color:var(--muted);font-size:.87rem;font-weight:500;cursor:pointer;transition:all .2s}
+.tab-btn:hover,.tab-btn.active{border-color:var(--green);background:var(--green);color:#fff}
+.habits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.hcard{background:var(--bg);border:2px solid var(--border);border-radius:var(--r);padding:18px;cursor:pointer;transition:all .2s;position:relative}
+.hcard:hover{border-color:var(--green-l);box-shadow:var(--sh)}
+.hcard.selected{border-color:var(--green);background:var(--green-p)}
+.hcard-check{display:none;position:absolute;top:12px;right:12px;width:22px;height:22px;background:var(--green);color:#fff;border-radius:50%;align-items:center;justify-content:center;font-size:.7rem;font-weight:700}
+.hcard.selected .hcard-check{display:flex}
+.hcard-icon{font-size:1.9rem;margin-bottom:9px;display:block}
+.hcard-name{font-weight:700;font-size:.95rem;margin-bottom:5px}
+.hcard-id{font-size:.8rem;color:var(--green);font-style:italic;margin-bottom:9px}
+.hcard-tags{display:flex;gap:7px;flex-wrap:wrap}
+.htag{padding:2px 9px;background:#fff;border-radius:50px;font-size:.72rem;color:var(--muted);border:1px solid var(--border)}
+.hcard-start{margin-top:11px;padding:9px 11px;background:rgba(45,106,79,.07);border-radius:8px}
+.hcard-start-lbl{font-size:.72rem;color:var(--green);font-weight:700;margin-bottom:2px}
+.hcard-start-txt{font-size:.8rem;color:var(--muted)}
+.select-notice{text-align:center;padding:18px;color:var(--muted);font-size:.88rem;margin-top:8px}
+.sel-count{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;font-size:.75rem;font-weight:700}
+
+/* TRACKER */
+#tracker{display:none;background:#fff}
+#tracker.visible{display:block}
+.tracker-list{display:flex;flex-direction:column;gap:28px}
+.thabit{background:var(--bg);border-radius:var(--rl);padding:26px}
+.thabit-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.thabit-title{display:flex;align-items:center;gap:11px}
+.thabit-icon{font-size:1.7rem}
+.thabit-title h3{margin-bottom:3px}
+.thabit-title p{font-size:.78rem;color:var(--green);font-style:italic}
+.streak{display:flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--border);border-radius:50px;padding:7px 14px}
+.streak-fire{font-size:1.1rem}
+.streak-num{font-size:1.3rem;font-weight:800;color:var(--green);line-height:1}
+.streak-lbl{font-size:.72rem;color:var(--muted)}
+
+.day-grid{display:grid;grid-template-columns:repeat(11,1fr);gap:5px;margin-bottom:10px}
+.dcell{aspect-ratio:1;border-radius:5px;border:2px solid var(--border);background:#fff;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;font-size:.58rem;color:var(--muted);font-weight:600;user-select:none}
+.dcell:hover:not(.future){border-color:var(--green-l)}
+.dcell.done{background:var(--green);border-color:var(--green);color:#fff}
+.dcell.today:not(.done){background:var(--accent-l);border-color:var(--accent);color:var(--accent)}
+.dcell.today.done{box-shadow:0 0 0 3px rgba(231,111,81,.35)}
+.dcell.missed{background:#FEE2E2;border-color:#FECACA;color:#B91C1C}
+.dcell.future{opacity:.25;cursor:default}
+.day-meta{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-bottom:14px}
+
+.today-row{display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:var(--r);border:2px solid var(--border);margin-top:4px;transition:all .2s}
+.today-row.done{border-color:var(--green-l);background:var(--green-p)}
+.today-ico{font-size:1.4rem}
+.today-txt{flex:1}
+.today-txt strong{display:block;margin-bottom:2px;font-size:.9rem}
+.today-txt span{color:var(--muted);font-size:.8rem}
+
+.motiv-box{background:linear-gradient(135deg,var(--green-p),#B7E4C7);border-radius:var(--rl);padding:28px;margin-top:28px;text-align:center}
+.motiv-box h3{color:var(--green);margin-bottom:7px}
+.motiv-box p{color:#2D6A4F;opacity:.85;font-size:.92rem}
+
+.alert{padding:11px 15px;border-radius:var(--r);margin-bottom:14px;font-size:.87rem;font-weight:500;display:none}
+.alert.warn{background:#FFF3CD;color:#664D03;border:1px solid #FFE69C}
+.alert.ok{background:var(--green-p);color:var(--green);border:1px solid #95D5B2}
+
+/* QUOTE */
+.quote-sec{background:var(--green);color:#fff;padding:56px 0}
+.quote-txt{font-size:clamp(1.2rem,2.8vw,1.7rem);font-weight:300;line-height:1.55;text-align:center;max-width:680px;margin:0 auto;font-style:italic;opacity:.95}
+.quote-auth{text-align:center;margin-top:16px;opacity:.55;font-size:.87rem}
+
+/* FOOTER */
+footer{background:#111827;color:rgba(255,255,255,.5);padding:36px 0;text-align:center;font-size:.82rem}
+footer strong{color:#fff}
+
+/* UTIL */
+.tc{text-align:center}
+.mt16{margin-top:16px}
+.mt24{margin-top:24px}
+.mt32{margin-top:32px}
+
+@media(max-width:700px){
+  section{padding:48px 0}
+  .day-grid{grid-template-columns:repeat(7,1fr)}
+  .stats-grid{grid-template-columns:1fr}
+  .stat-item{border-right:none;border-bottom:1px solid var(--border)}
+  .stat-item:last-child{border-bottom:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <div class="nav-logo">Атомный <span>Челлендж</span></div>
+      <a href="#tracker" class="btn btn-primary btn-sm" id="navCta" style="display:none">Мой трекер</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">📚 На основе «Атомных привычек» Джеймса Клира</div>
+      <h1>Кто ты<br>через 66 дней?</h1>
+      <p class="hero-sub">Не гонимся за быстрым результатом. Строим систему, которая работает сама — одна маленькая привычка за раз. Без срывов, без чувства вины.</p>
+      <div class="hero-cta">
+        <a href="#catalog" class="btn btn-accent btn-lg">Выбрать привычку</a>
+        <a href="#method" class="btn btn-ghost btn-lg">Как это работает</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item"><div class="stat-num">66</div><div class="stat-lbl">дней до автоматизма</div></div>
+      <div class="stat-item"><div class="stat-num">2</div><div class="stat-lbl">минуты для старта</div></div>
+      <div class="stat-item"><div class="stat-num">1%</div><div class="stat-lbl">лучше каждый день</div></div>
+    </div>
+  </div>
+</div>
+
+<section id="method">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-tag">Методология</div>
+      <h2>4 закона хорошей привычки</h2>
+      <p>Формула Джеймса Клира: каждая устойчивая привычка держится на четырёх законах. Этот трекер помогает внедрить все четыре.</p>
+    </div>
+    <div class="laws-grid">
+      <div class="law-card">
+        <div class="law-num">1</div>
+        <h3>Сделай очевидным</h3>
+        <p>Привычка должна быть на виду. Привяжи новое действие к уже существующей рутине.</p>
+        <div class="law-ex">«После того как варю кофе — читаю 10 минут»</div>
+      </div>
+      <div class="law-card">
+        <div class="law-num">2</div>
+        <h3>Сделай привлекательным</h3>
+        <p>Свяжи привычку с тем, что уже нравится. Вознаграждение — часть системы, а не слабость.</p>
+        <div class="law-ex">«Слушаю любимый подкаст только во время прогулки»</div>
+      </div>
+      <div class="law-card">
+        <div class="law-num">3</div>
+        <h3>Сделай простым</h3>
+        <p>Правило двух минут: начни с версии, которую можно сделать за 2 минуты. Действие важнее объёма.</p>
+        <div class="law-ex">«Хочу медитировать 20 мин — начни с 2 минут»</div>
+      </div>
+      <div class="law-card">
+        <div class="law-num">4</div>
+        <h3>Сделай приятным</h3>
+        <p>Немедленное вознаграждение закрепляет привычку. Галочка в трекере — простейший дофамин прямо сейчас.</p>
+        <div class="law-ex">«Ставлю отметку = получаю мгновенное удовлетворение»</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--green-p);padding:56px 0">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-tag">Как это работает</div>
+      <h2>Три шага к новой версии себя</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-n">1</div>
+        <div>
+          <h3>Выбери привычку</h3>
+          <p>1–3 привычки из каталога. Каждая подобрана по принципам книги: с ясной идентичностью и простым стартом.</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-n">2</div>
+        <div>
+          <h3>Отмечай каждый день</h3>
+          <p>Заходи в трекер и ставь галочку. Не разрывай цепочку. Пропустил — никогда не пропускай дважды подряд.</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-n">3</div>
+        <div>
+          <h3>Стань другим человеком</h3>
+          <p>После 66 дней привычка становится частью идентичности. Ты не «пытаешься» — ты уже такой человек.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="catalog">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-tag">Каталог привычек</div>
+      <h2>Выбери свои привычки</h2>
+      <p>До 3 привычек. Сомневаешься — начни с одной. Меньше значит больше.</p>
+    </div>
+    <div class="cat-tabs" id="catTabs">
+      <button class="tab-btn active" data-cat="all">Все</button>
+      <button class="tab-btn" data-cat="health">🏃 Здоровье</button>
+      <button class="tab-btn" data-cat="mind">🧠 Разум</button>
+      <button class="tab-btn" data-cat="productivity">⚡ Продуктивность</button>
+      <button class="tab-btn" data-cat="finance">💰 Финансы</button>
+      <button class="tab-btn" data-cat="relations">❤️ Отношения</button>
+    </div>
+    <div class="habits-grid" id="habitsGrid"></div>
+    <div class="select-notice" id="selNotice">Выбери привычки выше, затем нажми кнопку</div>
+    <div class="tc mt24">
+      <button class="btn btn-primary btn-lg" id="startBtn" style="display:none" onclick="startChallenge()">Начать челлендж →</button>
+    </div>
+  </div>
+</section>
+
+<section id="tracker">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-tag">Мой трекер</div>
+      <h2>66-дневный челлендж</h2>
+      <p id="trackerSub"></p>
+    </div>
+    <div id="missedAlert" class="alert warn">⚠️ Вчера была пропущена привычка. Помни: <strong>никогда не пропускай дважды подряд.</strong> Сегодня — обязательно!</div>
+    <div class="tracker-list" id="trackerList"></div>
+    <div class="motiv-box">
+      <h3 id="motivTitle">Ты строишь свою идентичность</h3>
+      <p id="motivText">Каждая галочка — голос за того человека, которым ты хочешь стать. Результаты придут, когда наберётся критическая масса действий.</p>
+    </div>
+    <div class="tc mt32">
+      <button class="btn btn-outline" onclick="resetChallenge()">Сбросить и начать заново</button>
+    </div>
+  </div>
+</section>
+
+<div class="quote-sec">
+  <div class="container">
+    <div class="quote-txt">«Ты не поднимаешься до уровня своих целей. Ты опускаешься до уровня своих систем.»</div>
+    <div class="quote-auth">— Джеймс Клир, «Атомные привычки»</div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p><strong>Атомный Челлендж</strong> — трекер привычек по методологии Джеймса Клира</p>
+    <p style="margin-top:6px">Данные хранятся в твоём браузере и никуда не передаются</p>
+  </div>
+</footer>
+
+<script>
+const HABITS = [
+  {id:'water',icon:'💧',name:'Стакан воды с утра',cat:'health',time:1,diff:'easy',
+   identity:'Я человек, который заботится о теле',
+   twoMin:'Поставь стакан у кровати с вечера',stack:'Сразу после пробуждения'},
+  {id:'exercise',icon:'🏃',name:'Зарядка 10 минут',cat:'health',time:10,diff:'medium',
+   identity:'Я активный человек, который двигается каждый день',
+   twoMin:'5 отжиманий или 1 минута растяжки',stack:'После утреннего кофе'},
+  {id:'walk',icon:'🚶',name:'Прогулка 20 минут',cat:'health',time:20,diff:'easy',
+   identity:'Я человек, который проводит время на воздухе',
+   twoMin:'Выйди хотя бы на 5 минут',stack:'После обеда или ужина'},
+  {id:'sleep',icon:'😴',name:'Ложиться спать до 23:00',cat:'health',time:0,diff:'medium',
+   identity:'Я человек, который ценит качественный сон',
+   twoMin:'Поставь напоминание в 22:30',stack:'Выключай экраны в 22:30'},
+  {id:'nophone',icon:'📵',name:'Без телефона 1 час до сна',cat:'health',time:0,diff:'medium',
+   identity:'Я человек, который управляет своим вниманием',
+   twoMin:'Убери телефон на зарядку в другую комнату',stack:'После ужина'},
+  {id:'reading',icon:'📚',name:'Чтение 10 страниц',cat:'mind',time:15,diff:'easy',
+   identity:'Я человек, который постоянно учится',
+   twoMin:'Начни с 2 страниц',stack:'Перед сном вместо телефона'},
+  {id:'meditation',icon:'🧘',name:'Медитация 5 минут',cat:'mind',time:5,diff:'easy',
+   identity:'Я спокойный человек, который управляет умом',
+   twoMin:'3 глубоких вдоха — уже медитация',stack:'Сразу после пробуждения'},
+  {id:'gratitude',icon:'🙏',name:'Дневник благодарности (3 вещи)',cat:'mind',time:5,diff:'easy',
+   identity:'Я человек с позитивным мышлением',
+   twoMin:'Назови 1 вещь, за которую благодарен',stack:'Перед сном или за завтраком'},
+  {id:'language',icon:'🌍',name:'10 слов на иностранном языке',cat:'mind',time:10,diff:'easy',
+   identity:'Я человек, который говорит на нескольких языках',
+   twoMin:'Одно новое слово в день',stack:'В транспорте или за завтраком'},
+  {id:'journal',icon:'✍️',name:'Утренние страницы (3 стр.)',cat:'mind',time:20,diff:'medium',
+   identity:'Я человек, который понимает себя',
+   twoMin:'Напиши 5 предложений о том, что в голове',stack:'Сразу после пробуждения'},
+  {id:'mit',icon:'🎯',name:'Определить главную задачу дня',cat:'productivity',time:3,diff:'easy',
+   identity:'Я человек, который знает свои приоритеты',
+   twoMin:'Запиши 1 задачу на стикер перед работой',stack:'После включения компьютера'},
+  {id:'nosocial',icon:'🚫',name:'Без соцсетей до 12:00',cat:'productivity',time:0,diff:'hard',
+   identity:'Я человек, который управляет своим вниманием',
+   twoMin:'Первые 30 минут после пробуждения — без Instagram',stack:'Убери телефон с прикроватной тумбы'},
+  {id:'plan',icon:'📋',name:'Планировать следующий день вечером',cat:'productivity',time:5,diff:'easy',
+   identity:'Я организованный человек, контролирующий своё время',
+   twoMin:'Запиши 3 задачи на завтра',stack:'После ужина, перед тем как расслабиться'},
+  {id:'deepwork',icon:'🔬',name:'1 час глубокой работы',cat:'productivity',time:60,diff:'hard',
+   identity:'Я человек, способный к глубокой концентрации',
+   twoMin:'Начни с 15 минут без отвлечений',stack:'Первые 2 часа рабочего дня'},
+  {id:'expenses',icon:'💳',name:'Записывать расходы',cat:'finance',time:3,diff:'easy',
+   identity:'Я человек, который осознанно обращается с деньгами',
+   twoMin:'Сфоткай чек после любой покупки',stack:'Сразу после каждой покупки'},
+  {id:'savings',icon:'🏦',name:'Откладывать 10% дохода',cat:'finance',time:2,diff:'medium',
+   identity:'Я человек, который строит финансовую безопасность',
+   twoMin:'Переведи хотя бы 100 рублей на накопительный счёт',stack:'В день получения зарплаты'},
+  {id:'connect',icon:'❤️',name:'Написать близкому человеку',cat:'relations',time:5,diff:'easy',
+   identity:'Я человек, который поддерживает важные связи',
+   twoMin:'Отправь одно тёплое сообщение',stack:'За утренним кофе'},
+  {id:'compliment',icon:'😊',name:'Один искренний комплимент в день',cat:'relations',time:1,diff:'easy',
+   identity:'Я человек, который замечает хорошее в других',
+   twoMin:'Скажи что-то доброе первому встречному',stack:'Первая встреча с человеком за день'},
+];
+
+let state = {sel:[],startDate:null,done:{}};
+
+function save(){localStorage.setItem('ac66',JSON.stringify(state))}
+function load(){const s=localStorage.getItem('ac66');if(s){state=JSON.parse(s);return true}return false}
+
+function dKey(d){return d.toISOString().split('T')[0]}
+function today(){return dKey(new Date())}
+function yesterday(){const d=new Date();d.setDate(d.getDate()-1);return dKey(d)}
+
+function getDates(){
+  if(!state.startDate)return[];
+  const start=new Date(state.startDate),arr=[];
+  for(let i=0;i<66;i++){const d=new Date(start);d.setDate(start.getDate()+i);arr.push(dKey(d))}
+  return arr;
+}
+
+function getStreak(id){
+  const set=new Set(state.done[id]||[]);
+  const cur=new Date();
+  if(!set.has(dKey(cur)))cur.setDate(cur.getDate()-1);
+  let s=0;
+  while(set.has(dKey(cur))){s++;cur.setDate(cur.getDate()-1)}
+  return s;
+}
+
+// --- Catalog ---
+let curCat='all';
+
+function renderHabits(){
+  const list=curCat==='all'?HABITS:HABITS.filter(h=>h.cat===curCat);
+  const diffMap={easy:'Легко',medium:'Средне',hard:'Сложно'};
+  const diffCol={easy:'#52B788',medium:'#F4A261',hard:'#E76F51'};
+  document.getElementById('habitsGrid').innerHTML=list.map(h=>{
+    const sel=state.sel.includes(h.id);
+    return`<div class="hcard${sel?' selected':''}" onclick="toggleHabit('${h.id}')">
+      <div class="hcard-check">✓</div>
+      <span class="hcard-icon">${h.icon}</span>
+      <div class="hcard-name">${h.name}</div>
+      <div class="hcard-id">${h.identity}</div>
+      <div class="hcard-tags">
+        <span class="htag">⏱ ${h.time===0?'Вечером':h.time+' мин'}</span>
+        <span class="htag" style="color:${diffCol[h.diff]}">${diffMap[h.diff]}</span>
+      </div>
+      <div class="hcard-start">
+        <div class="hcard-start-lbl">▶ Правило 2 минут:</div>
+        <div class="hcard-start-txt">${h.twoMin}</div>
+      </div>
+    </div>`;
+  }).join('');
+  updateSelUI();
+}
+
+function toggleHabit(id){
+  if(state.startDate){
+    document.getElementById('tracker').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  if(state.sel.includes(id)){
+    state.sel=state.sel.filter(x=>x!==id);
+  } else {
+    if(state.sel.length>=3){alert('Максимум 3 привычки. Начни с малого — это работает лучше!');return}
+    state.sel.push(id);
+  }
+  renderHabits();
+}
+
+function updateSelUI(){
+  const n=state.sel.length,btn=document.getElementById('startBtn'),notice=document.getElementById('selNotice');
+  if(state.startDate){
+    btn.style.display='none';
+    notice.innerHTML='✅ Челлендж запущен — <a href="#tracker" style="color:var(--green);font-weight:600">перейти к трекеру</a>';
+    return;
+  }
+  if(n>0){
+    btn.style.display='inline-flex';
+    const w=n===1?'привычкой':n<5?'привычками':'привычками';
+    btn.textContent=`Начать челлендж с ${n} ${w} →`;
+    notice.innerHTML=`Выбрано: <span class="sel-count">${n}</span> из 3 возможных`;
+  } else {
+    btn.style.display='none';
+    notice.innerHTML='Выбери привычки выше, затем нажми кнопку';
+  }
+}
+
+function startChallenge(){
+  if(!state.sel.length)return;
+  state.startDate=today();
+  state.done={};
+  state.sel.forEach(id=>state.done[id]=[]);
+  save();
+  document.getElementById('navCta').style.display='inline-flex';
+  showTracker();
+  document.getElementById('tracker').scrollIntoView({behavior:'smooth'});
+}
+
+// --- Tracker ---
+function showTracker(){
+  document.getElementById('tracker').style.display='block';
+  renderTracker();
+}
+
+function renderTracker(){
+  if(!state.startDate||!state.sel.length)return;
+  const dates=getDates(),todayStr=today();
+  const elapsed=dates.indexOf(todayStr);
+
+  document.getElementById('trackerSub').textContent=
+    elapsed>=0?`День ${elapsed+1} из 66 · осталось ${65-elapsed} дней`:'Прогресс сохраняется в браузере';
+
+  const anyMissed=state.sel.some(id=>{
+    const set=new Set(state.done[id]||[]);
+    return elapsed>0&&!set.has(todayStr)&&!set.has(yesterday());
+  });
+  document.getElementById('missedAlert').style.display=anyMissed?'block':'none';
+
+  updateMotiv(elapsed);
+
+  document.getElementById('trackerList').innerHTML=state.sel.map(id=>{
+    const h=HABITS.find(x=>x.id===id);if(!h)return'';
+    const set=new Set(state.done[id]||[]);
+    const streak=getStreak(id),progress=(state.done[id]||[]).length;
+    const todayDone=set.has(todayStr);
+
+    const cells=dates.map((dt,i)=>{
+      const past=dt<todayStr,isT=dt===todayStr,fut=dt>todayStr;
+      const done=set.has(dt),missed=past&&!done;
+      let cls='dcell';
+      if(done)cls+=' done';
+      if(isT)cls+=' today';
+      if(missed)cls+=' missed';
+      if(fut)cls+=' future';
+      const label=(i===0||i===10||i===21||i===32||i===43||i===54||i===65||isT)?i+1:'';
+      return`<div class="${cls}" ${!fut?`onclick="toggleDay('${id}','${dt}')"`:''} title="День ${i+1}">${label}</div>`;
+    }).join('');
+
+    return`<div class="thabit">
+      <div class="thabit-hdr">
+        <div class="thabit-title">
+          <span class="thabit-icon">${h.icon}</span>
+          <div><h3>${h.name}</h3><p>${h.identity}</p></div>
+        </div>
+        <div class="streak">
+          <span class="streak-fire">${streak>=3?'🔥':'⬜'}</span>
+          <div><div class="streak-num">${streak}</div><div class="streak-lbl">дней подряд</div></div>
+        </div>
+      </div>
+      <div class="day-grid">${cells}</div>
+      <div class="day-meta"><span>День 1</span><span>${progress}/66 выполнено</span><span>День 66</span></div>
+      <div class="today-row ${todayDone?'done':''}">
+        <span class="today-ico">${todayDone?'✅':'⬜'}</span>
+        <div class="today-txt">
+          <strong>${todayDone?'Сегодня выполнено!':'Отметить на сегодня'}</strong>
+          <span>${h.stack}</span>
+        </div>
+        ${!todayDone?`<button class="btn btn-primary btn-sm" onclick="toggleDay('${id}','${todayStr}')">Отметить</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDay(id,dt){
+  if(!state.done[id])state.done[id]=[];
+  const i=state.done[id].indexOf(dt);
+  if(i>=0)state.done[id].splice(i,1);else state.done[id].push(dt);
+  save();renderTracker();
+}
+
+const motivs=[
+  {t:'Всё начинается с первого шага',p:'Ты уже лучше тех, кто только думает об изменениях. Действие — это всё.'},
+  {t:'Первые дни — самые важные',p:'Мозг учится новым паттернам. Каждое действие укрепляет нейронные связи.'},
+  {t:'Ты строишь систему',p:'Не думай о результате. Думай о системе, которую строишь каждый день.'},
+  {t:'Плато скрытого потенциала',p:'Кажется, ничего не меняется? Изменения копятся под поверхностью. Доверяй процессу.'},
+  {t:'Больше половины пути пройдено',p:'Привычка уже формируется на нейронном уровне. Не останавливайся сейчас.'},
+  {t:'Финишная прямая',p:'Меньше двух недель. Ты почти автоматизировал эту привычку. Держись!'},
+  {t:'🎉 Ты сделал это!',p:'Поздравляем! Теперь это часть тебя. Выбери следующую привычку и продолжай расти.'},
+];
+
+function updateMotiv(d){
+  const i=d<0?0:d<7?0:d<14?1:d<28?2:d<42?3:d<55?4:d<66?5:6;
+  document.getElementById('motivTitle').textContent=motivs[i].t;
+  document.getElementById('motivText').textContent=motivs[i].p;
+}
+
+function resetChallenge(){
+  if(confirm('Сбросить прогресс и начать заново?')){
+    state={sel:[],startDate:null,done:{}};
+    save();
+    document.getElementById('tracker').style.display='none';
+    document.getElementById('navCta').style.display='none';
+    renderHabits();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+document.getElementById('catTabs').addEventListener('click',e=>{
+  const b=e.target.closest('.tab-btn');if(!b)return;
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');curCat=b.dataset.cat;renderHabits();
+});
+
+(function init(){
+  const had=load();
+  renderHabits();
+  if(had&&state.startDate&&state.sel.length){
+    document.getElementById('navCta').style.display='inline-flex';
+    showTracker();
+  }
+})();
+</script>
+</body>
+</html>
